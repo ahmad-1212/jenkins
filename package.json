@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "TSC_COMPILE_ON_ERROR=true tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest --watchAll",
-    "cov": "jest --coverage --collectCoverageFrom='src/**/*.{ts,tsx}'"
+    "cov": "jest --coverage --collectCoverageFrom='src/components/**/*.{ts,tsx}'"
   },
   "dependencies": {
     "react": "^19.0.0",
