@@ -39,31 +39,71 @@
 # # CMD ["nginx", "-g", "daemon off;"]
 
 # Build stage
-FROM node:18.20.1-alpine as build
+# FROM node:18.20.1-alpine AS build
 
-# Set working directory
+# # Set working directory
+# WORKDIR /app
+
+# # Copy package files
+# COPY package*.json ./
+
+# # Install dependencies
+# RUN npm install --legacy-peer-deps
+
+# # Copy project files
+# COPY . .
+
+# # Build the React application
+# RUN npm run build
+
+# # Production stage
+# FROM nginx:alpine
+
+# # Copy built assets from build stage
+# COPY --from=build /app/build /usr/share/nginx/html
+
+# # Expose port 80
+# EXPOSE 80
+
+# # Start nginx
+# CMD ["nginx", "-g", "daemon off;"]
+
+FROM node:23-alpine AS development
+
 WORKDIR /app
 
-# Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install --legacy-peer-deps
+RUN npm install
 
-# Copy project files
 COPY . .
 
-# Build the React application
-RUN npm run build
+EXPOSE 8080
 
-# Production stage
-FROM nginx:alpine
+CMD ["npm", "run", "dev"]
 
-# Copy built assets from build stage
-COPY --from=build /app/build /usr/share/nginx/html
 
-# Expose port 80
+
+FROM node:23-alpine AS build
+
+WORKDIR /app
+
+# Copy dependencies first for caching
+COPY package*.json ./
+RUN npm install 
+
+# Copy application source code and build
+COPY . .
+
+RUN npm run build 
+
+
+FROM nginx:alpine AS production
+
+COPY --from=build /app/dist /usr/share/nginx/html
+
 EXPOSE 80
 
-# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
+
+

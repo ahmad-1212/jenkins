@@ -11,7 +11,6 @@ export default defineConfig({
     strictPort: true,
     port: 8080,
     host: true,
-    origin: "http://0.0.0.0:8080",
     watch: {
       usePolling: true,
     },
