@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   test-and-deploy:
     runs-on: ubuntu-latest
@@ -23,7 +24,27 @@ jobs:
         run: npm test
 
       - name: End of test
-        run: echo "Tests completed successfully. ${{ secrets.PORT}}"
+        run: echo "Tests completed successfully. ${{ secrets.PORT }}"
+
+      - name: Check if required secrets are present
+        run: |
+          if [ -z "${{ secrets.VM_HOST }}" ]; then
+            echo "Error: VM_HOST secret is not set."
+            exit 1
+          fi
+          if [ -z "${{ secrets.VM_USERNAME }}" ]; then
+            echo "Error: VM_USERNAME secret is not set."
+            exit 1
+          fi
+          if [ -z "${{ secrets.SSH_KEY }}" ]; then
+            echo "Error: SSH_KEY secret is not set."
+            exit 1
+          fi
+          if [ -z "${{ secrets.PORT }}" ]; then
+            echo "Error: PORT secret is not set."
+            exit 1
+          fi
+          echo "All required secrets are set."
 
       - name: SSH to VM and Deploy
         uses: appleboy/ssh-action@v1
@@ -33,5 +54,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd /home/${{ secrets.VM_USERNAME}}
+            cd /home/${{ secrets.VM_USERNAME }}
             ls
