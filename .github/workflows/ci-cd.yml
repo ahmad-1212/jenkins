@@ -23,14 +23,14 @@ jobs:
         run: npm test
 
       - name: End of test
-        run: echo "Tests completed successfully."
+        run: echo "Tests completed successfully. ${{ secrets.PORT}}"
 
       - name: SSH to VM and Deploy
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USERNAME }}
-          password: ${{ secrets.VM_PASSWORD}}
+          key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           script: |
             cd /home/${{ secrets.VM_USERNAME}}
