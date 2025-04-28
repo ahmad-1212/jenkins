@@ -52,7 +52,9 @@ jobs:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.PORT }}
+          port: 2222
           script: |
+            whoami
+            hostname
             cd /home/${{ secrets.VM_USERNAME }}
-            ls
+            ls -la
