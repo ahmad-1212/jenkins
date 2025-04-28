@@ -24,3 +24,13 @@ jobs:
 
       - name: End of test
         run: echo "Tests completed successfully."
+
+      - name: SSH to VM and Deploy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USERNAME }}
+          password: ${{ secrets.VM_PASSWORD}}
+          script: |
+            cd /home/${{ secrets.VM_USERNAME}}
+            ls
