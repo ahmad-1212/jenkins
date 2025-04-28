@@ -42,7 +42,7 @@ jobs:
           fi
           if [ -z "${{ secrets.PORT }}" ]; then
             echo "Error: PORT secret is not set."
-            exit 1
+            exit 1 
           fi
           echo "All required secrets are set."
 
