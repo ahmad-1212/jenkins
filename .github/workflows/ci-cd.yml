@@ -44,7 +44,7 @@ jobs:
             echo "Error: PORT secret is not set."
             exit 1 
           fi
-          echo "All required secrets are set."
+          echo "All required secrets are set and read successfully."
 
       - name: SSH to VM and Deploy
         uses: appleboy/ssh-action@v1
